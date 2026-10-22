@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}ইতিহাস | পাতার রোগ শনাক্তকরণ{% endblock %}
+
+{% block content %}
+<h1>আগের ফলাফল</h1>
+<p class="lead">সবচেয়ে নতুন ৫০টি পরীক্ষা, ডাটাবেস থেকে আনা।</p>
+
+{% if error %}
+<p class="notice error" role="alert">{{ error }}</p>
+{% elif not rows %}
+<div class="empty-state">
+  <p>এখনো কোনো ছবি পরীক্ষা করা হয়নি।</p>
+  <p><a href="{{ url_for('index') }}">প্রথম ছবি আপলোড করুন</a></p>
+</div>
+{% else %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">সময়</th>
+        <th scope="col">ইউজার</th>
+        <th scope="col">ছবি</th>
+        <th scope="col">রোগ</th>
+        <th scope="col">নিশ্চিততা</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row[0].strftime('%d-%m-%Y %H:%M') }}</td>
+        <td>{{ row[1] }}</td>
+        <td>
+          <img src="{{ url_for('uploaded_file', name=row[2].split('/')[-1]) }}" alt="" onerror="this.style.visibility='hidden'">
+        </td>
+        <td>{{ row[3] }}</td>
+        <td>{{ '%.1f'|format(row[4]) }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

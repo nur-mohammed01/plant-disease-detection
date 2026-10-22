@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>পাতার ছবি দিয়ে রোগ খুঁজুন</h1>
+<p class="lead">একটি পাতার পরিষ্কার ছবি আপলোড করুন। ফলাফল ও ছবির তথ্য ডাটাবেসে জমা থাকবে।</p>
+
+{% if error %}
+<p class="notice error" role="alert">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="{{ url_for('predict_route') }}" enctype="multipart/form-data">
+  <label for="user_id">কে ছবি দিচ্ছেন</label>
+  <select id="user_id" name="user_id" required>
+    {% for user in users %}
+    <option value="{{ user[0] }}">{{ user[1] }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="photo">পাতার ছবি</label>
+  <input id="photo" type="file" name="photo" accept=".jpg,.jpeg,.jfif,.png,.webp" required>
+  <p class="hint">একটি পাতা, পরিষ্কার আলোতে, সম্ভব হলে সাদা বা সাধারণ ব্যাকগ্রাউন্ডে তোলা ছবি দিন। ফল বা পুরো গাছের ছবিতে ফল ভুল হতে পারে।</p>
+
+  <button type="submit">ছবি পরীক্ষা করুন</button>
+</form>
+
+{% if result %}
+<section class="result" aria-live="polite">
+  <div class="result-grid">
+    <img src="{{ url_for('uploaded_file', name=result.filename) }}" alt="আপলোড করা পাতার ছবি">
+    <div>
+      <h2>{{ result.disease_name }}</h2>
+      <div class="meter {% if result.uncertain %}low{% endif %}" role="img" aria-label="নিশ্চিততা {{ '%.1f'|format(result.confidence) }} শতাংশ">
+        <span style="width: {{ '%.1f'|format(result.confidence) }}%"></span>
+      </div>
+      <p class="hint">নিশ্চিততা: {{ '%.1f'|format(result.confidence) }}%</p>
+    </div>
+  </div>
+
+  {% if result.uncertain %}
+  <p class="notice warn" style="margin-top:1.5rem">ফলাফল নিশ্চিত নয়। একটি পাতার আরও পরিষ্কার ছবি দিয়ে আবার চেষ্টা করুন।</p>
+  {% endif %}
+
+  <dl>
+    <dt>লক্ষণ</dt>
+    {% if result.symptoms %}<dd>{{ result.symptoms }}</dd>{% else %}<dd class="empty">এই রোগের তথ্য এখনো ডাটাবেসে যোগ করা হয়নি।</dd>{% endif %}
+    <dt>চিকিৎসা</dt>
+    {% if result.treatment %}<dd>{{ result.treatment }}</dd>{% else %}<dd class="empty">এই রোগের তথ্য এখনো ডাটাবেসে যোগ করা হয়নি।</dd>{% endif %}
+    <dt>প্রতিরোধ</dt>
+    {% if result.prevention %}<dd>{{ result.prevention }}</dd>{% else %}<dd class="empty">এই রোগের তথ্য এখনো ডাটাবেসে যোগ করা হয়নি।</dd>{% endif %}
+  </dl>
+</section>
+{% endif %}
+{% endblock %}

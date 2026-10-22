@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}পাতার রোগ শনাক্তকরণ{% endblock %}</title>
+<style>
+  :root {
+    --leaf: #1e4d38;
+    --leaf-soft: #e3eee7;
+    --paper: #f5f7f4;
+    --ink: #17261e;
+    --muted: #55655c;
+    --line: #d3dcd5;
+    --warn-ink: #7a4700;
+    --warn-bg: #fff3d6;
+    --err-ink: #8a1f1f;
+    --err-bg: #fdeaea;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hind Siliguri", "Noto Sans Bengali", "Nirmala UI", "Segoe UI", sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  a { color: var(--leaf); }
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 3px solid #e0a100;
+    outline-offset: 2px;
+  }
+  .top {
+    background: var(--leaf);
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem 1.5rem;
+    padding: .9rem 1.25rem;
+  }
+  .top a { color: #fff; text-decoration: none; }
+  .brand { font-weight: 700; font-size: 1.15rem; }
+  .top nav { display: flex; gap: 1.25rem; }
+  .top nav a { padding: .15rem 0; border-bottom: 2px solid transparent; }
+  .top nav a:hover { border-bottom-color: #fff; }
+  main { max-width: 46rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  h1 { font-size: 1.7rem; line-height: 1.35; margin: 0 0 .5rem; }
+  h2 { font-size: 1.25rem; margin: 2rem 0 .5rem; }
+  .lead { color: var(--muted); margin: 0 0 1.5rem; max-width: 36rem; }
+  label { display: block; font-weight: 600; margin: 1.25rem 0 .35rem; }
+  select, input[type=file] {
+    width: 100%;
+    padding: .65rem .75rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    font: inherit;
+    color: inherit;
+  }
+  .hint { color: var(--muted); font-size: .95rem; margin: .35rem 0 0; }
+  button {
+    margin-top: 1.5rem;
+    padding: .75rem 1.5rem;
+    background: var(--leaf);
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:hover { background: #163a2a; }
+  .notice { padding: .85rem 1rem; border-radius: 6px; margin: 0 0 1.5rem; }
+  .notice.error { background: var(--err-bg); color: var(--err-ink); }
+  .notice.warn { background: var(--warn-bg); color: var(--warn-ink); }
+  .result { margin-top: 2.5rem; border-top: 2px solid var(--leaf); padding-top: 1.5rem; }
+  .result-grid { display: grid; grid-template-columns: 12rem 1fr; gap: 1.5rem; align-items: start; }
+  .result img { width: 100%; border-radius: 6px; display: block; background: var(--line); }
+  .result h2 { margin-top: 0; font-size: 1.5rem; }
+  .meter { height: .9rem; background: var(--leaf-soft); border-radius: 99px; overflow: hidden; margin: .35rem 0 .25rem; }
+  .meter span { display: block; height: 100%; background: var(--leaf); }
+  .meter.low span { background: #c27a00; }
+  dl { margin: 1.5rem 0 0; }
+  dt { font-weight: 700; margin-top: 1rem; }
+  dd { margin: .15rem 0 0; max-width: 38rem; }
+  dd.empty { color: var(--muted); font-style: italic; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { font-weight: 700; background: var(--leaf-soft); }
+  td img { width: 3.5rem; height: 3.5rem; object-fit: cover; border-radius: 4px; display: block; }
+  .empty-state { margin-top: 2rem; padding: 1.5rem; background: #fff; border: 1px dashed var(--line); border-radius: 6px; }
+  @media (max-width: 34rem) {
+    .result-grid { grid-template-columns: 1fr; }
+    .result img { max-width: 14rem; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="{{ url_for('index') }}">পাতার রোগ শনাক্তকরণ</a>
+  <nav>
+    <a href="{{ url_for('index') }}">নতুন ছবি</a>
+    <a href="{{ url_for('history') }}">ইতিহাস</a>
+  </nav>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>
